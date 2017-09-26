@@ -1,8 +1,11 @@
-.btn {
+.addHolidays {
   border: 1px solid gray;
   margin: 20px;
 }
-.form-group,
-.form-control {
-  width: 10%;
+.container {
+  margin-bottom: 20px;
+  width: 20%;
+}
+.submitHoliday {
+  margin-top: 20px;
 }

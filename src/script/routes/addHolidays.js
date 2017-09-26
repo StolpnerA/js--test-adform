@@ -1,11 +1,14 @@
-import DB from "./../utils/DB";
-let db = new DB();
-let placeRender = document.querySelector(".workPlace");
+import HolidaysPage from "./../components/HolidaysPage";
+let holidaysPage = new HolidaysPage();
 
-class addHolidays {
-  renderPage() {
-    placeRender.innerHTML = `
-        
-      `;
-  }
-}
+var addHolidays = {
+  name: "addHolidays",
+  match: text => text == "addHolidays",
+  onBeforeEnter: () => {},
+  onEnter: () => {
+    holidaysPage.renderPage();
+  },
+  onLeave: () => {}
+};
+
+export { addHolidays };
