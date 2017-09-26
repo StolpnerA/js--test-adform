@@ -1,11 +1,13 @@
 import IndexPage from "./../components/IndexPage";
+import DB from "./../utils/DB";
 let indexPage = new IndexPage();
+let db = new DB();
 var index = {
   name: "index",
   match: "",
   onBeforeEnter: () => {},
   onEnter: () => {
-    if (localStorage.getItem("employess")) {
+    if (db.fetch("employees")) {
       indexPage.renderPage();
     } else {
       let count = 1;
@@ -36,7 +38,8 @@ var index = {
           position: "Front-end developer"
         }
       ];
-      localStorage.setItem("employees", JSON.stringify(employees));
+      db.setItem("employees", employees);
+      indexPage.renderPage();
     }
   },
   onLeave: () => {}

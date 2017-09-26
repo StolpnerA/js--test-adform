@@ -1,6 +1,20 @@
+import DB from "./../utils/DB";
+let db = new DB();
 class IndexPage {
   renderPage() {
     let placeRender = document.querySelector(".workPlace");
+    let employees = db.fetch("employees");
+    console.log(employees);
+    let tbody = `<tbody>`;
+    employees.forEach(function(element) {
+      tbody += `
+      <tr>
+        <th scope="row">${element.id}</th>
+        <td>${element.name}</td>
+        <td>${element.position}</td>
+      </tr>
+      `;
+    }, this);
     placeRender.innerHTML = `
     <table class="table table-striped">
     <thead>
@@ -12,7 +26,9 @@ class IndexPage {
             <th>Дата Конца</th>
         </tr>
     </thead>
-</table>
+    ${tbody}
+    </tbody>
+    </table>
     `;
   }
 }
