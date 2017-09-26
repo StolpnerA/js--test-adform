@@ -6,6 +6,14 @@ var addHolidays = {
   match: text => text == "addHolidays",
   onBeforeEnter: () => {},
   onEnter: () => {
+    let btn = document.querySelector(".addHolidays");
+    btn.removeEventListener("click", () => {
+      location.hash = "addHolidays";
+    });
+    btn.innerHTML = "Назад";
+    btn.addEventListener("click", () => {
+      location.hash = "";
+    });
     holidaysPage.renderPage();
   },
   onLeave: () => {}

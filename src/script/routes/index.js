@@ -7,6 +7,11 @@ var index = {
   match: "",
   onBeforeEnter: () => {},
   onEnter: () => {
+    let btn = document.querySelector(".addHolidays");
+    btn.innerHTML = "Добавить отпуск сотруднику";
+    btn.addEventListener("click", () => {
+      location.hash = "addHolidays";
+    });
     if (!db.fetch("employees")) {
       let count = 1;
       let employees = [
