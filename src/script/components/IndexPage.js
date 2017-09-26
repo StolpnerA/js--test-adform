@@ -5,7 +5,6 @@ let placeRender = document.querySelector(".workPlace");
 class IndexPage {
   renderPage() {
     let employees = db.fetch("employees");
-    console.log(employees);
     let tbody = `<tbody>`;
     employees.forEach(function(element) {
       tbody += `

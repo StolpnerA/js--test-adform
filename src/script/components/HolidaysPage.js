@@ -4,16 +4,16 @@ let placeRender = document.querySelector(".workPlace");
 
 class HolidaysPage {
   renderPage() {
+    let employees = db.fetch("employees");
+    let select = `<select class="form-control" id="exampleFormControlSelect1">`;
+    employees.forEach(function(element) {
+      select += `<option>${element.name}</option>`;
+    }, this);
     placeRender.innerHTML = `
     <div class="container">
     <div class="form-group">
         <label for="exampleFormControlSelect1">Выбор сотрудника</label>
-        <select class="form-control" id="exampleFormControlSelect1">
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
+        ${select}
         </select>
         <label for="dateFrom">Дата начало отпуска: </label>
         <input type="date" name="calendar" class="form-control" id="dateFrom">
