@@ -7,9 +7,7 @@ var index = {
   match: "",
   onBeforeEnter: () => {},
   onEnter: () => {
-    if (db.fetch("employees")) {
-      indexPage.renderPage();
-    } else {
+    if (!db.fetch("employees")) {
       let count = 1;
       let employees = [
         {
@@ -39,7 +37,10 @@ var index = {
         }
       ];
       db.setItem("employees", employees);
+    } else if (db.fetch("holiday")) {
       indexPage.renderPage();
+    } else {
+      indexPage.showError();
     }
   },
   onLeave: () => {}

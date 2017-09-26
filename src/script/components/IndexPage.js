@@ -1,8 +1,9 @@
 import DB from "./../utils/DB";
 let db = new DB();
+let placeRender = document.querySelector(".workPlace");
+
 class IndexPage {
   renderPage() {
-    let placeRender = document.querySelector(".workPlace");
     let employees = db.fetch("employees");
     console.log(employees);
     let tbody = `<tbody>`;
@@ -30,6 +31,11 @@ class IndexPage {
     </tbody>
     </table>
     `;
+  }
+  showError() {
+    placeRender.innerHTML = ` <div class="alert alert-warning" role="alert">
+    Нехватает данных! Добавьте отпуск для сотрудников (кнопочка выше)
+    </div>;`;
   }
 }
 export default IndexPage;
