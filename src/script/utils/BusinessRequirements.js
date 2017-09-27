@@ -14,7 +14,7 @@ class BusinessRequirements {
       return "Выбранный диапазон дат не соответсвуют правилу (минимальное кол. дней в отпуске = 2)";
   }
   checkingMaxDaysOnHoliday(dateFrom, dateTo) {
-    if (!dateFrom && !dateTo) return "Выберите дату";
+    if (!dateFrom || !dateTo) return "Выберите дату";
     dateFrom = new Date(dateFrom);
     dateTo = new Date(dateTo);
     let count = (dateTo - dateFrom) / 1000 / 60 / 60 / 24 + 1;
