@@ -23,7 +23,7 @@ var index = {
       })
       .catch(() => alert("Не прошла загрузка данных с LS"));
     db
-      .fetch("holiday")
+      .fetch("holidays")
       .then(() => indexPage.renderPage())
       .catch(() => indexPage.showError());
   },
