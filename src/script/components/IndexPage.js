@@ -4,32 +4,41 @@ let placeRender = document.querySelector(".workPlace");
 
 class IndexPage {
   renderPage() {
-    db.fetch("employees").then(data => {
-      let tbody = `<tbody>`;
-      data.forEach(function(element) {
-        tbody += `
-        <tr>
-          <th scope="row">${element.id}</th>
-          <td>${element.name}</td>
-          <td>${element.position}</td>
-        </tr>
-        `;
-      }, this);
-      placeRender.innerHTML = `
-      <table class="table table-striped">
-      <thead>
-          <tr>
-              <th>#</th>
-              <th>ФИО</th>
-              <th>Должность</th>
-              <th>Дата Начало</th>
-              <th>Дата Конца</th>
-          </tr>
-      </thead>
-      ${tbody}
-      </tbody>
-      </table>
-      `;
+    let tbody = `<tbody>`;
+    db.fetch("holidays").then(data => {
+      db.fetch("employees").then(employees => {
+        data.forEach(elem => {
+          employees.forEach(element => {
+            if (element.id === elem.id) {
+              console.log(elem, element);
+              tbody += `
+              <tr>
+                <th scope="row">${element.id}</th>
+                <td>${element.name}</td>
+                <td>${element.position}</td>
+                <td>${elem.dateFrom}</td>
+                <td>${elem.dateTo}</td>
+              </tr>
+              `;
+            }
+          });
+        });
+        placeRender.innerHTML = `
+          <table class="table table-striped">
+          <thead>
+              <tr>
+                  <th>#</th>
+                  <th>ФИО</th>
+                  <th>Должность</th>
+                  <th>Дата Начало</th>
+                  <th>Дата Конца</th>
+              </tr>
+          </thead>
+          ${tbody}
+          </tbody>
+          </table>
+          `;
+      });
     });
   }
   showError() {
