@@ -16,12 +16,7 @@ var index = {
     });
     db
       .fetch("employees")
-      .then(data => {
-        if (!data) {
-          db.setItem("employees", demoData.createEmployees());
-        }
-      })
-      .catch(() => alert("Не прошла загрузка данных с LS"));
+      .catch(() => db.setItem("employees", demoData.createEmployees()));
     db
       .fetch("holidays")
       .then(() => indexPage.renderPage())

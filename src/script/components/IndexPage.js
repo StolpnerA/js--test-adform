@@ -4,32 +4,33 @@ let placeRender = document.querySelector(".workPlace");
 
 class IndexPage {
   renderPage() {
-    let employees = db.fetch("employees");
-    let tbody = `<tbody>`;
-    employees.forEach(function(element) {
-      tbody += `
-      <tr>
-        <th scope="row">${element.id}</th>
-        <td>${element.name}</td>
-        <td>${element.position}</td>
-      </tr>
-      `;
-    }, this);
-    placeRender.innerHTML = `
-    <table class="table table-striped">
-    <thead>
+    db.fetch("employees").then(data => {
+      let tbody = `<tbody>`;
+      data.forEach(function(element) {
+        tbody += `
         <tr>
-            <th>#</th>
-            <th>ФИО</th>
-            <th>Должность</th>
-            <th>Дата Начало</th>
-            <th>Дата Конца</th>
+          <th scope="row">${element.id}</th>
+          <td>${element.name}</td>
+          <td>${element.position}</td>
         </tr>
-    </thead>
-    ${tbody}
-    </tbody>
-    </table>
-    `;
+        `;
+      }, this);
+      placeRender.innerHTML = `
+      <table class="table table-striped">
+      <thead>
+          <tr>
+              <th>#</th>
+              <th>ФИО</th>
+              <th>Должность</th>
+              <th>Дата Начало</th>
+              <th>Дата Конца</th>
+          </tr>
+      </thead>
+      ${tbody}
+      </tbody>
+      </table>
+      `;
+    });
   }
   showError() {
     placeRender.innerHTML = ` <div class="alert alert-warning" role="alert">
