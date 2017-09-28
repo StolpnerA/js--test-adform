@@ -8,7 +8,7 @@ class HolidaysPage {
   renderPage() {
     db.fetch("employees").then(data => {
       let select = `<select class="form-control" id="exampleFormControlSelect1">`;
-      data.forEach(function(element) {
+      data.forEach(element => {
         select += `<option>${element.name}</option>`;
       }, this);
       placeRender.innerHTML = `
@@ -35,17 +35,52 @@ class HolidaysPage {
       .addEventListener("click", this.checkingData);
   }
   checkingData() {
+    let countDays, idEmployee;
     let spanInfo = document.querySelector(".info");
     let dateFrom = document.querySelector(".dateFrom");
     let dateTo = document.querySelector(".dateTo");
-    br
-      .checkingData(24, dateFrom.value, dateTo.value)
+    let selectEmployee = document.querySelector("#exampleFormControlSelect1");
+    let valSelectEmployee =
+      selectEmployee.options[selectEmployee.selectedIndex].value;
+    db
+      .fetch("employees")
+      .then(data => {
+        data.forEach(element => {
+          if (element.name === valSelectEmployee) {
+            idEmployee = element.id;
+            return (countDays = element.countDaysHoli);
+          }
+        });
+      })
       .then(() => {
-        spanInfo.innerHTML = `<div class="alert alert-success" role="alert">Счастливого Вам отдыха</div>`;
+        return br.checkingData(countDays, dateFrom.value, dateTo.value);
+      })
+      .then(() => {
+        return (spanInfo.innerHTML = `<div class="alert alert-success" role="alert">Счастливого Вам отдыха</div>`);
+      })
+      .then(() => {
+        debugger;
+        this.addEmployeeAfterCheckingValid(
+          idEmployee,
+          dateFrom.value,
+          dateTo.value
+        );
       })
       .catch(info => {
         spanInfo.innerHTML = `<div class="alert alert-danger" role="alert">${info}</div>`;
       });
+  }
+  addEmployeeAfterCheckingValid(idEmployee, dateFrom, dateTo) {
+    let count = 1;
+    let holidays = [
+      {
+        idHoli: count++,
+        id: idEmployee,
+        dateFrom: dateFrom,
+        dateTo: dateTo
+      }
+    ];
+    db.setItem("holidays", holidays);
   }
 }
 
