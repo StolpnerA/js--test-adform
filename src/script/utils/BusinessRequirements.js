@@ -2,11 +2,7 @@ class BusinessRequirements {
   checkingData(countDays, dateFrom, dateTo) {
     if (!dateFrom || !dateTo) return Promise.reject("Выберите дату");
     return Promise.resolve()
-      .then(() => {
-        dateFrom = new Date(dateFrom);
-        dateTo = new Date(dateTo);
-        return (dateTo - dateFrom) / 1000 / 60 / 60 / 24 + 1;
-      })
+      .then(() => this.toCountDiffBetweenDates(dateFrom, dateTo))
       .then(diffBetweenDates =>
         this.checkingMaxCountDay(countDays, diffBetweenDates)
       )
@@ -44,6 +40,11 @@ class BusinessRequirements {
       );
     }
     return Promise.resolve();
+  }
+  toCountDiffBetweenDates(dateFrom, dateTo) {
+    dateFrom = new Date(dateFrom);
+    dateTo = new Date(dateTo);
+    return Promise.resolve((dateTo - dateFrom) / 1000 / 60 / 60 / 24 + 1);
   }
 }
 

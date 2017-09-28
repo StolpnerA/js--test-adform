@@ -59,12 +59,26 @@ class HolidaysPage {
         return (spanInfo.innerHTML = `<div class="alert alert-success" role="alert">Счастливого Вам отдыха</div>`);
       })
       .then(() => {
-        this.addEmployeeAfterCheckingValid(
+        return this.addEmployeeAfterCheckingValid(
           idEmployee,
           dateFrom.value,
           dateTo.value
         );
       })
+      // .then(() => {
+      //   return br.toCountDiffBetweenDates(dateFrom.value, dateTo.value);
+      // })
+      // .then(diffBetweenDate => {
+      //   return db.fetch("employees");
+      // })
+      // .then(arr => {
+      //   arr.forEach((item, i) => {
+      //     if (item.id === idEmployee) {
+      //       item.countDaysHoli = item.countDaysHoli - diffBetweenDate;
+      //     }
+      //     console.log(i);
+      //   });
+      // })
       .catch(info => {
         spanInfo.innerHTML = `<div class="alert alert-danger" role="alert">${info}</div>`;
       });

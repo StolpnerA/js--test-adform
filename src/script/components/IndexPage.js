@@ -10,7 +10,6 @@ class IndexPage {
         data.forEach(elem => {
           employees.forEach(element => {
             if (element.id === elem.id) {
-              console.log(elem, element);
               tbody += `
               <tr>
                 <th scope="row">${element.id}</th>
