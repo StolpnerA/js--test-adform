@@ -10,8 +10,17 @@ class IndexPage {
         data.forEach(elem => {
           employees.forEach(element => {
             if (element.id === elem.id) {
+              let classForTr;
+              let dateNow = new Date();
+              let dateFrom = new Date(elem.dateFrom);
+              let dateTo = new Date(elem.dateTo);
+              if (dateNow < dateFrom) {
+                classForTr = "yellow";
+              } else if (dateNow >= dateFrom && dateNow <= dateTo) {
+                classForTr = "green";
+              } else classForTr = "red";
               tbody += `
-              <tr>
+              <tr class="${classForTr}">
                 <th scope="row">${element.id}</th>
                 <td>${element.name}</td>
                 <td>${element.position}</td>
