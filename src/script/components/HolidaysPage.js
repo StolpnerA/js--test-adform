@@ -32,7 +32,7 @@ class HolidaysPage {
   addHandlerEvent() {
     document
       .querySelector(".submitHoliday")
-      .addEventListener("click", this.checkingData);
+      .addEventListener("click", this.checkingData.bind(this));
   }
   checkingData() {
     let countDays, idEmployee;
@@ -59,7 +59,6 @@ class HolidaysPage {
         return (spanInfo.innerHTML = `<div class="alert alert-success" role="alert">Счастливого Вам отдыха</div>`);
       })
       .then(() => {
-        debugger;
         this.addEmployeeAfterCheckingValid(
           idEmployee,
           dateFrom.value,
@@ -71,16 +70,29 @@ class HolidaysPage {
       });
   }
   addEmployeeAfterCheckingValid(idEmployee, dateFrom, dateTo) {
-    let count = 1;
-    let holidays = [
-      {
-        idHoli: count++,
-        id: idEmployee,
-        dateFrom: dateFrom,
-        dateTo: dateTo
-      }
-    ];
-    db.setItem("holidays", holidays);
+    db
+      .fetch("holidays")
+      .then(data => {
+        let holiday = {
+          idHoli: data.length + 1,
+          id: idEmployee,
+          dateFrom: dateFrom,
+          dateTo: dateTo
+        };
+        data.push(holiday);
+        db.setItem("holidays", data);
+      })
+      .catch(() => {
+        let holiday = [
+          {
+            idHoli: 1,
+            id: idEmployee,
+            dateFrom: dateFrom,
+            dateTo: dateTo
+          }
+        ];
+        db.setItem("holidays", holiday);
+      });
   }
 }
 
