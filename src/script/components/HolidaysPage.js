@@ -38,12 +38,14 @@ class HolidaysPage {
     let spanInfo = document.querySelector(".info");
     let dateFrom = document.querySelector(".dateFrom");
     let dateTo = document.querySelector(".dateTo");
-    let info = br.checkingMaxDaysOnHoliday(dateFrom.value, dateTo.value);
-    if (!info) {
-      spanInfo.innerHTML = `<div class="alert alert-success" role="alert">Счастливого Вам отдыха</div>`;
-    } else {
-      spanInfo.innerHTML = `<div class="alert alert-danger" role="alert">${info}</div>`;
-    }
+    br
+      .checkingData(24, dateFrom.value, dateTo.value)
+      .then(() => {
+        spanInfo.innerHTML = `<div class="alert alert-success" role="alert">Счастливого Вам отдыха</div>`;
+      })
+      .catch(info => {
+        spanInfo.innerHTML = `<div class="alert alert-danger" role="alert">${info}</div>`;
+      });
   }
 }
 
