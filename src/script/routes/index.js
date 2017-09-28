@@ -1,7 +1,9 @@
 import IndexPage from "./../components/IndexPage";
 import DB from "./../utils/DB";
+import DemoData from "./../DemoData";
 let indexPage = new IndexPage();
 let db = new DB();
+let demoData = new DemoData();
 var index = {
   name: "index",
   match: "",
@@ -12,46 +14,18 @@ var index = {
     btn.addEventListener("click", () => {
       location.hash = "addHolidays";
     });
-    if (!db.fetch("employees")) {
-      let count = 1;
-      let employees = [
-        {
-          id: count++,
-          name: "Столпнер Андрей Сергеевич",
-          position: "Front-end developer",
-          countDaysHoli: 24
-        },
-        {
-          id: count++,
-          name: "Столпнер Сергей Сергеевич",
-          position: "System Administrator",
-          countDaysHoli: 24
-        },
-        {
-          id: count++,
-          name: "Сукора Станислав Игоревич",
-          position: "Back-end developer",
-          countDaysHoli: 24
-        },
-        {
-          id: count++,
-          name: "Довгаль Алексей Владимирович",
-          position: "Front-end developer",
-          countDaysHoli: 24
-        },
-        {
-          id: count++,
-          name: "Иванов Иван Иванович",
-          position: "Front-end developer",
-          countDaysHoli: 24
+    db
+      .fetch("employees")
+      .then(data => {
+        if (!data) {
+          db.setItem("employees", demoData.createEmployees());
         }
-      ];
-      db.setItem("employees", employees);
-    } else if (db.fetch("holiday")) {
-      indexPage.renderPage();
-    } else {
-      indexPage.showError();
-    }
+      })
+      .catch(() => alert("Не прошла загрузка данных с LS"));
+    db
+      .fetch("holiday")
+      .then(() => indexPage.renderPage())
+      .catch(() => indexPage.showError());
   },
   onLeave: () => {}
 };
