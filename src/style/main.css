@@ -9,12 +9,12 @@
 .info {
   margin-top: 20px;
 }
-.yellow {
+.upcoming {
   background-color: #fff3cd !important;
 }
-.green {
+.present {
   background-color: #d4edda !important;
 }
-.red {
+.past {
   background-color: #f8d7da !important;
 }

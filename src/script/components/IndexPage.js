@@ -15,10 +15,10 @@ class IndexPage {
               let dateFrom = new Date(elem.dateFrom);
               let dateTo = new Date(elem.dateTo);
               if (dateNow < dateFrom) {
-                classForTr = "yellow";
+                classForTr = "upcoming";
               } else if (dateNow >= dateFrom && dateNow <= dateTo) {
-                classForTr = "green";
-              } else classForTr = "red";
+                classForTr = "present";
+              } else classForTr = "past";
               tbody += `
               <tr class="${classForTr}">
                 <th scope="row">${element.id}</th>
