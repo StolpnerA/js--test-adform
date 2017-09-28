@@ -3,7 +3,9 @@ class DB {
     return Promise.resolve(localStorage.setItem(key, JSON.stringify(data)));
   }
   fetch(key) {
-    return Promise.resolve(JSON.parse(localStorage.getItem(key)));
+    let data = JSON.parse(localStorage.getItem(key));
+    if (data) return Promise.resolve(data);
+    return Promise.reject();
   }
 }
 export default DB;
