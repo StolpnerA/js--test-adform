@@ -22,3 +22,7 @@
   margin-left: 5px;
   font-size: 20px;
 }
+.editDate,
+.delData {
+  margin-left: 20px;
+}
