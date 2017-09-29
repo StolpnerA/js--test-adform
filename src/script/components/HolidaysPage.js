@@ -65,20 +65,21 @@ class HolidaysPage {
           dateTo.value
         );
       })
-      // .then(() => {
-      //   return br.toCountDiffBetweenDates(dateFrom.value, dateTo.value);
-      // })
-      // .then(diffBetweenDate => {
-      //   return db.fetch("employees");
-      // })
-      // .then(arr => {
-      //   arr.forEach((item, i) => {
-      //     if (item.id === idEmployee) {
-      //       item.countDaysHoli = item.countDaysHoli - diffBetweenDate;
-      //     }
-      //     console.log(i);
-      //   });
-      // })
+      .then(() => {
+        return db.fetch("employees");
+      })
+      .then(arr => {
+        let diffBetweenDate = br.toCountDiffBetweenDates(
+          dateFrom.value,
+          dateTo.value
+        );
+        arr.forEach((item, i) => {
+          if (item.id === idEmployee) {
+            item.countDaysHoli = item.countDaysHoli - diffBetweenDate;
+          }
+        });
+        db.setItem("employees", arr);
+      })
       .catch(info => {
         spanInfo.innerHTML = `<div class="alert alert-danger" role="alert">${info}</div>`;
       });
