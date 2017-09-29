@@ -64,6 +64,12 @@ class IndexPage {
   addHandlerEvent() {
     let btnSortByFioАscending = document.querySelector(".sortByFioАscending");
     let btnSortByFioDescending = document.querySelector(".sortByFioDescending");
+    let btnSortByDateFromAscending = document.querySelector(
+      ".sortByDateFromАscending"
+    );
+    let btnSortByDateFromDescending = document.querySelector(
+      ".sortByDateFromDescending"
+    );
     btnSortByFioАscending.addEventListener(
       "click",
       eventForSort("employees", "sortByFioАscending")
@@ -71,6 +77,14 @@ class IndexPage {
     btnSortByFioDescending.addEventListener(
       "click",
       eventForSort("employees", "sortByFioDescending")
+    );
+    btnSortByDateFromAscending.addEventListener(
+      "click",
+      eventForSort("holidays", "sortByDateFromАscending")
+    );
+    btnSortByDateFromDescending.addEventListener(
+      "click",
+      eventForSort("holidays", "sortByDateFromDescending")
     );
     function eventForSort(nameDB, sortBy) {
       return () => {
