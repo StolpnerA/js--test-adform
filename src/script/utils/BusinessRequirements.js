@@ -44,7 +44,7 @@ class BusinessRequirements {
   toCountDiffBetweenDates(dateFrom, dateTo) {
     dateFrom = new Date(dateFrom);
     dateTo = new Date(dateTo);
-    return Promise.resolve((dateTo - dateFrom) / 1000 / 60 / 60 / 24 + 1);
+    return (dateTo - dateFrom) / 1000 / 60 / 60 / 24 + 1;
   }
 }
 
