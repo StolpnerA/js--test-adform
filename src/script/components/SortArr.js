@@ -8,6 +8,7 @@ class SortArr {
       arr.sort(this.sortByDateFromАscending);
     } else arr.sort(this.sortByDateFromDescending);
     console.log(arr);
+    return arr;
   }
   sortByFioАscending(personA, personB) {
     if (personA.name > personB.name) {
