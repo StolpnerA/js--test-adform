@@ -1,4 +1,8 @@
 # Календарь отпусков
+
+## GitHub Pages
+http://StolpnerA.github.io/js--test-adform/build
+
 ## Как установить
 
 ```
@@ -14,9 +18,6 @@ npm i
 # run app
 gulp
 ```
-
-## GitHub Pages
-http://StolpnerA.github.io/js--test-adform
 
 ## Приложение состоит из 2 частей:
 
