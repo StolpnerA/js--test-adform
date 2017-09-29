@@ -12,12 +12,14 @@ class IndexPage {
         data.forEach(elem => {
           employees.forEach(element => {
             if (element.id === elem.id) {
-              let classForTr;
+              let classForTr, btnEdite, btnDel;
               let dateNow = new Date();
               let dateFrom = new Date(elem.dateFrom);
               let dateTo = new Date(elem.dateTo);
               if (dateNow < dateFrom) {
                 classForTr = "upcoming";
+                btnEdite = `<button type="button" class="editDate btn btn-light">Изменить даты</button>`;
+                btnDel = `<button type="button" class="delData btn btn-light">Удалить</button>`;
               } else if (dateNow >= dateFrom && dateNow <= dateTo) {
                 classForTr = "present";
               } else classForTr = "past";
@@ -26,7 +28,7 @@ class IndexPage {
                 <th scope="row">${element.id}</th>
                 <td>${element.name}</td>
                 <td>${element.position}</td>
-                <td>${elem.dateFrom}</td>
+                <td>${elem.dateFrom}${btnEdite || ""}${btnDel || ""}</td>
                 <td>${elem.dateTo}</td>
               </tr>
               `;
