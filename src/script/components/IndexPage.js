@@ -1,4 +1,6 @@
 import DB from "./../utils/DB";
+import SortArr from "./SortArr";
+let sortArr = new SortArr();
 let db = new DB();
 let placeRender = document.querySelector(".workPlace");
 
@@ -36,9 +38,12 @@ class IndexPage {
           <thead>
               <tr>
                   <th>#</th>
-                  <th>ФИО</th>
+                  <th>ФИО <i class="sortByFioDescending fa fa-caret-down" aria-hidden="true"></i>
+                  <i class="sortByFioАscending fa fa-caret-up" aria-hidden="true"></i>
+                  </th>
                   <th>Должность</th>
-                  <th>Дата Начало</th>
+                  <th>Дата Начало <i class="sortByDateFromDescending fa fa-caret-down" aria-hidden="true"></i>
+                  <i class="sortByDateFromАscending fa fa-caret-up" aria-hidden="true"></i></th>
                   <th>Дата Конца</th>
               </tr>
           </thead>
@@ -46,6 +51,7 @@ class IndexPage {
           </tbody>
           </table>
           `;
+        this.addHandlerEvent();
       });
     });
   }
@@ -53,6 +59,26 @@ class IndexPage {
     placeRender.innerHTML = ` <div class="alert alert-warning" role="alert">
     Нехватает данных! Добавьте отпуск для сотрудников (кнопочка выше)
     </div>;`;
+  }
+
+  addHandlerEvent() {
+    let btnSortByFioАscending = document.querySelector(".sortByFioАscending");
+    let btnSortByFioDescending = document.querySelector(".sortByFioDescending");
+    btnSortByFioАscending.addEventListener(
+      "click",
+      eventForSort("employees", "sortByFioАscending")
+    );
+    btnSortByFioDescending.addEventListener(
+      "click",
+      eventForSort("employees", "sortByFioDescending")
+    );
+    function eventForSort(nameDB, sortBy) {
+      return () => {
+        db.fetch(nameDB).then(arr => {
+          sortArr.sort(arr, sortBy);
+        });
+      };
+    }
   }
 }
 export default IndexPage;
