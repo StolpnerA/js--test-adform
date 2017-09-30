@@ -19,7 +19,7 @@ var index = {
       .catch(() => db.setItem("employees", demoData.createEmployees()));
     db
       .fetch("holidays")
-      .then(() => indexPage.renderPage())
+      .then(() => indexPage.init())
       .catch(() => indexPage.showError());
   },
   onLeave: () => {}
