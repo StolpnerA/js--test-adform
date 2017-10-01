@@ -4,7 +4,6 @@ let db = new DB();
 let sortArr = new SortArr();
 class BusinessRequirements {
   checkingData(countDays, dateFrom, dateTo, idEmployee) {
-    debugger;
     if (!dateFrom || !dateTo) return Promise.reject("Выберите дату");
     return Promise.resolve()
       .then(() => this.toCountDiffBetweenDates(dateFrom, dateTo))
@@ -32,8 +31,8 @@ class BusinessRequirements {
           obj.dateTo
         );
         let diffBetweenDatesWithLH = this.toCountDiffBetweenDates(
-          obj.dateFrom,
-          obj.dateTo
+          obj.dateTo,
+          dateFrom
         );
         return this.checkingRangeDates(
           diffBetweenDatesWithLH,
@@ -70,10 +69,10 @@ class BusinessRequirements {
     return Promise.resolve(diffBetweenDates);
   }
   checkingRangeDates(diffBetweenDatesWithLH, diffBetweenDateLastHoli) {
-    if (diffBetweenDateLastHoli <= diffBetweenDatesWithLH) {
+    if (diffBetweenDateLastHoli > diffBetweenDatesWithLH) {
+      let infoError = diffBetweenDateLastHoli - diffBetweenDatesWithLH;
       return Promise.reject(
-        `Выбранный диапазон дат не соответсвуют правилу (минимальный период между периодами отпуска равен размеру прошлого отпуска), Вы еще должны проработать ${diffBetweenDateLastHoli -
-          diffBetweenDatesWithLH} дн.`
+        `Выбранный диапазон дат не соответсвуют правилу (минимальный период между периодами отпуска равен размеру прошлого отпуска), Вы еще должны проработать ${infoError} дн.`
       );
       return Promise.resolve();
     }
