@@ -1,5 +1,9 @@
+import DB from "./DB";
+import SortArr from "./../components/SortArr";
+let db = new DB();
+let sortArr = new SortArr();
 class BusinessRequirements {
-  checkingData(countDays, dateFrom, dateTo) {
+  checkingData(countDays, dateFrom, dateTo, idEmployee) {
     if (!dateFrom || !dateTo) return Promise.reject("Выберите дату");
     return Promise.resolve()
       .then(() => this.toCountDiffBetweenDates(dateFrom, dateTo))
@@ -9,9 +13,32 @@ class BusinessRequirements {
       .then(diffBetweenDates => {
         return this.checkingMinDaysOnHoliday(diffBetweenDates);
       })
-      .then(diffBetweenDates =>
-        this.checkingMaxDaysOnHoliday(diffBetweenDates)
-      );
+      .then(diffBetweenDates => this.checkingMaxDaysOnHoliday(diffBetweenDates))
+      .then(() => {
+        return this.filterById(idEmployee);
+      })
+      .then(filterArr => sortArr.sort(filterArr, "sortByDateToDescending"))
+      .then(sortedArr => {
+        return sortedArr.find(item => {
+          if (item.dateTo < dateTo) {
+            return true;
+          }
+        });
+      })
+      .then(obj => {
+        let diffBetweenDateLastHoli = this.toCountDiffBetweenDates(
+          obj.dateFrom,
+          obj.dateTo
+        );
+        let diffBetweenDatesWithLH = this.toCountDiffBetweenDates(
+          obj.dateTo,
+          dateFrom
+        );
+        return this.checkingRangeDates(
+          diffBetweenDatesWithLH,
+          diffBetweenDateLastHoli
+        );
+      });
   }
   checkingMaxCountDay(countDays, diffBetweenDates) {
     if (countDays <= 1) {
@@ -39,7 +66,29 @@ class BusinessRequirements {
         `Выбранный диапазон дат не соответсвуют правилу (максимальное кол. дней в отпуске = 15), а выбранно ${diffBetweenDates} дн.`
       );
     }
-    return Promise.resolve();
+    return Promise.resolve(diffBetweenDates);
+  }
+  checkingRangeDates(diffBetweenDatesWithLH, diffBetweenDateLastHoli) {
+    if (diffBetweenDateLastHoli > diffBetweenDatesWithLH) {
+      let infoError = diffBetweenDateLastHoli - diffBetweenDatesWithLH;
+      return Promise.reject(
+        `Выбранный диапазон дат не соответсвуют правилу (минимальный период между периодами отпуска равен размеру прошлого отпуска), Вы еще должны проработать ${infoError} дн.`
+      );
+      return Promise.resolve();
+    }
+  }
+  filterById(idEmployee) {
+    return Promise.resolve()
+      .then(() => db.fetch("holidays"))
+      .then(data => {
+        let filterArr = data.filter(item => {
+          if (item.id === idEmployee) {
+            return item.id;
+          }
+        });
+        return filterArr;
+      })
+      .catch(() => Promise.resolve());
   }
   toCountDiffBetweenDates(dateFrom, dateTo) {
     dateFrom = new Date(dateFrom);
