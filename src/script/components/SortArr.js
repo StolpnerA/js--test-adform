@@ -1,15 +1,26 @@
 class SortArr {
-  sort(arr, order) {
+  constructor() {
+    this.arrEmployees = [];
+    this.arrDate = [];
+  }
+  sort(arr, order, arrEmployees) {
+    this.arrDate = arr;
+    this.arrEmployees = arrEmployees;
     if (order === "sortByFioАscending") {
-      arr.sort(this.sortByFioАscending);
+      arr.sort(this.sortByFioАscending.bind(this));
     } else if (order === "sortByFioDescending") {
-      arr.sort(this.sortByFioDescending);
+      arr.sort(this.sortByFioDescending.bind(this));
     } else if (order === "sortByDateFromАscending") {
       arr.sort(this.sortByDateFromАscending);
     } else arr.sort(this.sortByDateFromDescending);
     return arr;
   }
+  getUserById(userId, users) {
+    return users.find(({ id }) => userId === id);
+  }
   sortByFioАscending(personA, personB) {
+    personA = this.getUserById(personA.id, this.arrEmployees);
+    personB = this.getUserById(personB.id, this.arrEmployees);
     if (personA.name > personB.name) {
       return 1;
     } else if (personA.name < personB.name) {
@@ -17,6 +28,8 @@ class SortArr {
     }
   }
   sortByFioDescending(personA, personB) {
+    personA = this.getUserById(personA.id, this.arrEmployees);
+    personB = this.getUserById(personB.id, this.arrEmployees);
     if (personA.name < personB.name) {
       return 1;
     } else if (personA.name > personB.name) {
