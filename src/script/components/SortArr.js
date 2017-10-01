@@ -16,7 +16,7 @@ class SortArr {
     return arr;
   }
   getUserById(userId, users) {
-    return users.find(({ id }) => userId === id);
+    return users.find(item => userId === item.id);
   }
   sortByFioАscending(personA, personB) {
     personA = this.getUserById(personA.id, this.arrEmployees);
