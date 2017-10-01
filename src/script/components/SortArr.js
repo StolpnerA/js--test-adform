@@ -12,6 +12,8 @@ class SortArr {
       arr.sort(this.sortByFioDescending.bind(this));
     } else if (order === "sortByDateFromАscending") {
       arr.sort(this.sortByDateFromАscending);
+    } else if (order === "sortByDateToDescending") {
+      arr.sort(this.sortByDateToDescending);
     } else arr.sort(this.sortByDateFromDescending);
     return arr;
   }
@@ -40,6 +42,13 @@ class SortArr {
     if (personA.dateFrom > personB.dateFrom) {
       return 1;
     } else if (personA.dateFrom < personB.dateFrom) {
+      return -1;
+    }
+  }
+  sortByDateToDescending(personA, personB) {
+    if (personA.dateTo < personB.dateTo) {
+      return 1;
+    } else if (personA.dateTo > personB.dateTo) {
       return -1;
     }
   }

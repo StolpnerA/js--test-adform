@@ -53,7 +53,12 @@ class HolidaysPage {
         });
       })
       .then(() => {
-        return br.checkingData(countDays, dateFrom.value, dateTo.value);
+        return br.checkingData(
+          countDays,
+          dateFrom.value,
+          dateTo.value,
+          idEmployee
+        );
       })
       .then(() => {
         return (spanInfo.innerHTML = `<div class="alert alert-success" role="alert">Счастливого Вам отдыха</div>`);
