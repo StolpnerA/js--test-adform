@@ -35,7 +35,7 @@ class HolidaysPage {
       .addEventListener("click", this.checkingData.bind(this));
   }
   checkingData() {
-    let countDays, idEmployee;
+    let countDays, idEmployee, positionEmployee;
     let spanInfo = document.querySelector(".info");
     let dateFrom = document.querySelector(".dateFrom");
     let dateTo = document.querySelector(".dateTo");
@@ -48,6 +48,7 @@ class HolidaysPage {
         data.forEach(element => {
           if (element.name === valSelectEmployee) {
             idEmployee = element.id;
+            positionEmployee = element.position;
             return (countDays = element.countDaysHoli);
           }
         });
@@ -57,7 +58,8 @@ class HolidaysPage {
           countDays,
           dateFrom.value,
           dateTo.value,
-          idEmployee
+          idEmployee,
+          positionEmployee
         );
       })
       .then(() => {
