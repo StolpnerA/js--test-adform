@@ -106,7 +106,6 @@ class IndexPage {
       let dateTo = ev.target.classList[3].slice(7);
       let diffBetweenDates = br.toCountDiffBetweenDates(dateFrom, dateTo);
       let idEmplo = ev.target.classList[4].slice(8);
-      console.log(diffBetweenDates);
       db
         .fetch("holidays")
         .then(data => {
