@@ -1,9 +1,9 @@
-import HolidaysPage from "./../components/HolidaysPage";
-let holidaysPage = new HolidaysPage();
+import EditHolidaysPage from "./../components/EditHolidaysPage";
+let editHolidaysPage = new EditHolidaysPage();
 
-let addHolidays = {
-  name: "addHolidays",
-  match: text => text == "addHolidays",
+let editHoliday = {
+  name: "editHoliday",
+  match: text => text === text,
   onBeforeEnter: () => {},
   onEnter: () => {
     let btn = document.querySelector(".addHolidays");
@@ -14,9 +14,9 @@ let addHolidays = {
     btn.addEventListener("click", () => {
       location.hash = "";
     });
-    holidaysPage.renderPage();
+    editHolidaysPage.init();
   },
   onLeave: () => {}
 };
 
-export { addHolidays };
+export { editHoliday };

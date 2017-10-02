@@ -4,7 +4,8 @@ import DemoData from "./../DemoData";
 let indexPage = new IndexPage();
 let db = new DB();
 let demoData = new DemoData();
-var index = {
+
+let index = {
   name: "index",
   match: "",
   onBeforeEnter: () => {},
@@ -19,7 +20,7 @@ var index = {
       .catch(() => db.setItem("employees", demoData.createEmployees()));
     db
       .fetch("holidays")
-      .then(() => indexPage.renderPage())
+      .then(() => indexPage.init())
       .catch(() => indexPage.showError());
   },
   onLeave: () => {}

@@ -8,4 +8,5 @@ class DB {
     return Promise.reject();
   }
 }
+
 export default DB;

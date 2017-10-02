@@ -31,9 +31,16 @@ class DemoData {
         name: "Иванов Иван Иванович",
         position: "Front-end developer",
         countDaysHoli: 24
+      },
+      {
+        id: count++,
+        name: "Паныш Илья Владимирович",
+        position: "Back-end developer",
+        countDaysHoli: 24
       }
     ];
     return employees;
   }
 }
+
 export default DemoData;

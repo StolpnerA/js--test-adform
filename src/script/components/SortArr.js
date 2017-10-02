@@ -1,15 +1,29 @@
 class SortArr {
-  sort(arr, order) {
+  constructor() {
+    this.arrEmployees = [];
+    this.arrDate = [];
+  }
+  sort(arr, order, arrEmployees) {
+    this.arrDate = arr;
+    this.arrEmployees = arrEmployees;
     if (order === "sortByFioАscending") {
-      arr.sort(this.sortByFioАscending);
+      arr.sort(this.sortByFioАscending.bind(this));
     } else if (order === "sortByFioDescending") {
-      arr.sort(this.sortByFioDescending);
+      arr.sort(this.sortByFioDescending.bind(this));
     } else if (order === "sortByDateFromАscending") {
       arr.sort(this.sortByDateFromАscending);
+    } else if (order === "sortByDateToDescending") {
+      arr.sort(this.sortByDateToDescending);
     } else arr.sort(this.sortByDateFromDescending);
-    console.log(arr);
+    return arr;
   }
+  getUserById(userId, users) {
+    return users.find(item => userId === item.id);
+  }
+
   sortByFioАscending(personA, personB) {
+    personA = this.getUserById(personA.id, this.arrEmployees);
+    personB = this.getUserById(personB.id, this.arrEmployees);
     if (personA.name > personB.name) {
       return 1;
     } else if (personA.name < personB.name) {
@@ -17,6 +31,8 @@ class SortArr {
     }
   }
   sortByFioDescending(personA, personB) {
+    personA = this.getUserById(personA.id, this.arrEmployees);
+    personB = this.getUserById(personB.id, this.arrEmployees);
     if (personA.name < personB.name) {
       return 1;
     } else if (personA.name > personB.name) {
@@ -27,6 +43,13 @@ class SortArr {
     if (personA.dateFrom > personB.dateFrom) {
       return 1;
     } else if (personA.dateFrom < personB.dateFrom) {
+      return -1;
+    }
+  }
+  sortByDateToDescending(personA, personB) {
+    if (personA.dateTo < personB.dateTo) {
+      return 1;
+    } else if (personA.dateTo > personB.dateTo) {
       return -1;
     }
   }
