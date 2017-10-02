@@ -138,7 +138,7 @@ class BusinessRequirements {
     return Promise.resolve()
       .then(() => db.fetch("holidays"))
       .catch(() => [])
-      .then(data => (this.arrDate = data))
+      .then(data => (this.arrDate = arrDate || data))
       .then(() => db.fetch("employees"))
       .then(data => (this.arrEmployees = data))
       .then(() => {

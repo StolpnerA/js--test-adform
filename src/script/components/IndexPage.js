@@ -30,7 +30,7 @@ class IndexPage {
           let dateTo = new Date(elem.dateTo);
           if (dateNow < dateFrom) {
             classForTr = "upcoming";
-            btnEdite = `<button type="button" class="editDate id_${elem.idHoli} btn btn-light">Изменить даты</button>`;
+            btnEdite = `<button type="button" class="editDate id_${elem.idHoli} idEmplo_${element.id} btn btn-light">Изменить даты</button>`;
             btnDel = `<button type="button" class="delData id_${elem.idHoli} dateFrom_${elem.dateFrom} dateTo_${elem.dateTo} idEmplo_${element.id} btn btn-light">Удалить</button>`;
           } else if (dateNow >= dateFrom && dateNow <= dateTo) {
             classForTr = "present";
@@ -153,7 +153,7 @@ class IndexPage {
       .then(() => this.renderPage());
   }
   eventEditeBtn(ev) {
-    location.hash = `${ev.target.classList[1]}`;
+    location.hash = `${ev.target.classList[1]}&${ev.target.classList[2]}`;
   }
 }
 export default IndexPage;
