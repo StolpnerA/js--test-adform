@@ -72,6 +72,7 @@ class BusinessRequirements {
     return Promise.resolve(diffBetweenDates);
   }
   checkingRangeDates(diffBetweenDatesWithLH, diffBetweenDateLastHoli) {
+    diffBetweenDateLastHoli = diffBetweenDateLastHoli + 2;
     if (diffBetweenDateLastHoli > diffBetweenDatesWithLH) {
       let infoError = diffBetweenDateLastHoli - diffBetweenDatesWithLH;
       return Promise.reject(

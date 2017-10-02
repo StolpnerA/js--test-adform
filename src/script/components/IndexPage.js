@@ -99,7 +99,7 @@ class IndexPage {
       eventForSort("holidays", "sortByDateFromDescending")
     );
     table.addEventListener("click", ev => {
-      console.log(ev.target);
+      console.log(ev.target.classList[1]);
     });
 
     let that = this;
