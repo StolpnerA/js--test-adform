@@ -156,4 +156,5 @@ class IndexPage {
     location.hash = `${ev.target.classList[1]}&${ev.target.classList[2]}`;
   }
 }
+
 export default IndexPage;

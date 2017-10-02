@@ -1,7 +1,7 @@
 import HolidaysPage from "./../components/HolidaysPage";
 let holidaysPage = new HolidaysPage();
 
-var addHolidays = {
+let addHolidays = {
   name: "addHolidays",
   match: text => text == "addHolidays",
   onBeforeEnter: () => {},

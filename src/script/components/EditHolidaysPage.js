@@ -10,6 +10,7 @@ class EditHolidaysPage {
     this.arrEmployees = [];
     this.currentEmployee = [];
     this.currentDate = [];
+    this.diffBetweenOldDate = 0;
   }
   init() {
     let arrHash = location.hash.split("&");
@@ -19,6 +20,10 @@ class EditHolidaysPage {
         this.arrDate = arrDate;
         let idHoli = arrHash[0].slice(4);
         this.currentDate = arrDate.filter(item => item.idHoli === +idHoli);
+        this.diffBetweenOldDate = br.toCountDiffBetweenDates(
+          this.currentDate[0].dateFrom,
+          this.currentDate[0].dateTo
+        );
         return;
       })
       .then(() => db.fetch("employees"))
@@ -57,7 +62,8 @@ class EditHolidaysPage {
     let spanInfo = document.querySelector(".info");
     let dateFrom = document.querySelector(".dateFrom");
     let dateTo = document.querySelector(".dateTo");
-    let countDays = this.currentEmployee[0].countDaysHoli;
+    let countDays =
+      this.currentEmployee[0].countDaysHoli + this.diffBetweenOldDate;
     let idEmployee = this.currentEmployee[0].id;
     let positionEmployee = this.currentEmployee[0].position;
     Promise.resolve()
@@ -89,21 +95,22 @@ class EditHolidaysPage {
           dateTo.value
         );
       })
-      //   .then(() => {
-      //     return db.fetch("employees");
-      //   })
-      //   .then(arr => {
-      //     let diffBetweenDate = br.toCountDiffBetweenDates(
-      //       dateFrom.value,
-      //       dateTo.value
-      //     );
-      //     arr.forEach((item, i) => {
-      //       if (item.id === idEmployee) {
-      //         item.countDaysHoli = item.countDaysHoli - diffBetweenDate;
-      //       }
-      //     });
-      //     db.setItem("employees", arr);
-      //   })
+      .then(() => {
+        return db.fetch("employees");
+      })
+      .then(arr => {
+        let diffBetweenDate = br.toCountDiffBetweenDates(
+          dateFrom.value,
+          dateTo.value
+        );
+        arr.forEach((item, i) => {
+          if (item.id === idEmployee) {
+            item.countDaysHoli =
+              item.countDaysHoli + this.diffBetweenOldDate - diffBetweenDate;
+          }
+        });
+        db.setItem("employees", arr);
+      })
       .catch(info => {
         spanInfo.innerHTML = `<div class="alert alert-danger" role="alert">${info}</div>`;
       });

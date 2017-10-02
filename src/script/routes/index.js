@@ -4,7 +4,8 @@ import DemoData from "./../DemoData";
 let indexPage = new IndexPage();
 let db = new DB();
 let demoData = new DemoData();
-var index = {
+
+let index = {
   name: "index",
   match: "",
   onBeforeEnter: () => {},

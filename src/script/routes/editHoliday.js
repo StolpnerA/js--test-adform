@@ -1,6 +1,7 @@
 import EditHolidaysPage from "./../components/EditHolidaysPage";
 let editHolidaysPage = new EditHolidaysPage();
-var editHoliday = {
+
+let editHoliday = {
   name: "editHoliday",
   match: text => text === text,
   onBeforeEnter: () => {},

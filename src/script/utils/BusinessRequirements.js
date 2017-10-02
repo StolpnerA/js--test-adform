@@ -2,6 +2,7 @@ import DB from "./DB";
 import SortArr from "./../components/SortArr";
 let db = new DB();
 let sortArr = new SortArr();
+
 class BusinessRequirements {
   constructor() {
     this.arrEmployees = [];
@@ -21,18 +22,12 @@ class BusinessRequirements {
       .then(diffBetweenDates =>
         this.checkingMaxCountDay(countDays, diffBetweenDates)
       )
-      .then(diffBetweenDates => {
-        return this.checkingMinDaysOnHoliday(diffBetweenDates);
-      })
+      .then(diffBetweenDates => this.checkingMinDaysOnHoliday(diffBetweenDates))
       .then(diffBetweenDates => this.checkingMaxDaysOnHoliday(diffBetweenDates))
       .then(() => this.filterByPosition(idEmployee, positionEmployee, arrDate))
       .then(() => this.filterByDateRange(dateFrom, dateTo))
-      .then(filteredArr => {
-        return this.chackingCountEmployeeInHoli(filteredArr);
-      })
-      .then(() => {
-        return this.filterById(idEmployee);
-      })
+      .then(filteredArr => this.chackingCountEmployeeInHoli(filteredArr))
+      .then(() => this.filterById(idEmployee))
       .then(filterArr => this.chackingDateWithCurrent(filterArr, dateFrom))
       .then(filterArr => sortArr.sort(filterArr, "sortByDateToDescending"))
       .then(sortedArr => {
@@ -60,27 +55,7 @@ class BusinessRequirements {
         );
       });
   }
-  //В задании не сказана, что делать если человек один на должности, поэтому решил его отправлять в отпус
-  chackingCountEmployeeInHoli(filteredArr) {
-    let res = (filteredArr.length + 1) * 100 / this.arrEmployees.length;
-    if (res > 50) {
-      return Promise.reject(
-        "По данной специальности нельзя уходить в отпуск (в отпуске имеют право находиться не более 50% сотрудников одной должности)"
-      );
-    }
-    return Promise.resolve();
-  }
-  chackingDateWithCurrent(arr, dateFrom) {
-    let tmp = arr.find(item => {
-      if (item.dateFrom == dateFrom) {
-        return true;
-      }
-    });
-    if (tmp) {
-      return Promise.reject("Данные даты уже имеются");
-    }
-    return Promise.resolve(arr);
-  }
+
   checkingMaxCountDay(countDays, diffBetweenDates) {
     if (countDays <= 1) {
       return Promise.reject(
@@ -109,6 +84,27 @@ class BusinessRequirements {
     }
     return Promise.resolve(diffBetweenDates);
   }
+  //В задании не сказана, что делать если человек один на должности, поэтому решил его не отправлять в отпус, т.к. в требоивании не более 50%, а это 100%
+  chackingCountEmployeeInHoli(filteredArr) {
+    let res = (filteredArr.length + 1) * 100 / this.arrEmployees.length;
+    if (res > 50) {
+      return Promise.reject(
+        "По данной специальности нельзя уходить в отпуск (в отпуске имеют право находиться не более 50% сотрудников одной должности)"
+      );
+    }
+    return Promise.resolve();
+  }
+  chackingDateWithCurrent(arr, dateFrom) {
+    let tmp = arr.find(item => {
+      if (item.dateFrom == dateFrom) {
+        return true;
+      }
+    });
+    if (tmp) {
+      return Promise.reject("Данные даты уже имеются");
+    }
+    return Promise.resolve(arr);
+  }
   checkingRangeDates(diffBetweenDatesWithLH, diffBetweenDateLastHoli) {
     diffBetweenDateLastHoli = diffBetweenDateLastHoli + 2;
     if (diffBetweenDateLastHoli > diffBetweenDatesWithLH) {
@@ -119,16 +115,7 @@ class BusinessRequirements {
       return Promise.resolve();
     }
   }
-  filterById(idEmployee) {
-    return Promise.resolve().then(() => {
-      let filterArr = this.arrDate.filter(item => {
-        if (item.id === idEmployee) {
-          return item.id;
-        }
-      });
-      return filterArr;
-    });
-  }
+
   filterByPosition(idEmployee, positionEmployee, arrDate) {
     return Promise.resolve()
       .then(() => db.fetch("holidays"))
@@ -150,14 +137,24 @@ class BusinessRequirements {
         });
       });
   }
-  filterUserByPositiom(userPosi, users) {
-    return users.filter(item => userPosi === item.position);
-  }
   filterByDateRange(dateFrom) {
     let newArr = this.arrDate.filter(item => {
       return dateFrom >= item.dateFrom && dateFrom <= item.dateTo;
     });
     return newArr;
+  }
+  filterById(idEmployee) {
+    return Promise.resolve().then(() => {
+      let filterArr = this.arrDate.filter(item => {
+        if (item.id === idEmployee) {
+          return item.id;
+        }
+      });
+      return filterArr;
+    });
+  }
+  filterUserByPositiom(userPosi, users) {
+    return users.filter(item => userPosi === item.position);
   }
   toCountDiffBetweenDates(dateFrom, dateTo) {
     dateFrom = new Date(dateFrom);
