@@ -1,7 +1,9 @@
 import DB from "./../utils/DB";
 import SortArr from "./SortArr";
+import BR from "./../utils/BusinessRequirements";
 let sortArr = new SortArr();
 let db = new DB();
+let br = new BR();
 let placeRender = document.querySelector(".workPlace");
 
 class IndexPage {
@@ -18,7 +20,6 @@ class IndexPage {
       .then(() => this.renderPage());
   }
   renderPage() {
-    console.log(this.arrDate, this.arrEmloyees);
     let tbody = `<tbody>`;
     this.arrDate.forEach(elem => {
       this.arrEmloyees.forEach(element => {
@@ -30,7 +31,7 @@ class IndexPage {
           if (dateNow < dateFrom) {
             classForTr = "upcoming";
             btnEdite = `<button type="button" class="editDate btn btn-light">Изменить даты</button>`;
-            btnDel = `<button type="button" class="delData id_${elem.id} btn btn-light">Удалить</button>`;
+            btnDel = `<button type="button" class="delData id_${elem.idHoli} dateFrom_${elem.dateFrom} dateTo_${elem.dateTo} idEmplo_${element.id} btn btn-light">Удалить</button>`;
           } else if (dateNow >= dateFrom && dateNow <= dateTo) {
             classForTr = "present";
           } else classForTr = "past";
@@ -99,7 +100,40 @@ class IndexPage {
       eventForSort("holidays", "sortByDateFromDescending")
     );
     table.addEventListener("click", ev => {
-      console.log(ev.target.classList[1]);
+      let idHoli = ev.target.classList[1].slice(3);
+      let dateFrom = ev.target.classList[2].slice(9);
+      let dateTo = ev.target.classList[3].slice(7);
+      let diffBetweenDates = br.toCountDiffBetweenDates(dateFrom, dateTo);
+      let idEmplo = ev.target.classList[4].slice(8);
+      console.log(diffBetweenDates);
+      db
+        .fetch("holidays")
+        .then(data => {
+          data.forEach((item, i) => {
+            if (item.idHoli == idHoli) {
+              data.splice(i, 1);
+            }
+          });
+          return data;
+        })
+        .then(data => {
+          db.setItem("holidays", data);
+          this.arrDate = data;
+        })
+        .then(() => db.fetch("employees"))
+        .then(data => {
+          data.forEach(item => {
+            if (item.id == idEmplo) {
+              item.countDaysHoli += diffBetweenDates;
+            }
+          });
+          return data;
+        })
+        .then(newArr => {
+          db.setItem("employees", newArr);
+          this.arrEmloyees = newArr;
+        })
+        .then(() => this.renderPage());
     });
 
     let that = this;
