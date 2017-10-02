@@ -17,10 +17,11 @@ class BusinessRequirements {
       .then(() => {
         return this.filterById(idEmployee);
       })
+      .then(filterArr => this.chackingDateWithCurrent(filterArr, dateFrom))
       .then(filterArr => sortArr.sort(filterArr, "sortByDateToDescending"))
       .then(sortedArr => {
         return sortedArr.find(item => {
-          if (item.dateTo < dateTo) {
+          if (item.dateTo <= dateFrom) {
             return true;
           }
         });
@@ -42,6 +43,17 @@ class BusinessRequirements {
           diffBetweenDateLastHoli
         );
       });
+  }
+  chackingDateWithCurrent(arr, dateFrom) {
+    let tmp = arr.find(item => {
+      if (item.dateFrom == dateFrom) {
+        return true;
+      }
+    });
+    if (tmp) {
+      return Promise.reject("Данные даты уже имеются");
+    }
+    return Promise.resolve(arr);
   }
   checkingMaxCountDay(countDays, diffBetweenDates) {
     if (countDays <= 1) {
