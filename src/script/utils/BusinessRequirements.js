@@ -3,7 +3,7 @@ import SortArr from "./../components/SortArr";
 let db = new DB();
 let sortArr = new SortArr();
 class BusinessRequirements {
-  checkingData(countDays, dateFrom, dateTo, idEmployee) {
+  checkingData(countDays, dateFrom, dateTo, idEmployee, positionEmployee) {
     if (!dateFrom || !dateTo) return Promise.reject("Выберите дату");
     return Promise.resolve()
       .then(() => this.toCountDiffBetweenDates(dateFrom, dateTo))
@@ -26,6 +26,9 @@ class BusinessRequirements {
         });
       })
       .then(obj => {
+        if (!obj) {
+          return Promise.resolve();
+        }
         let diffBetweenDateLastHoli = this.toCountDiffBetweenDates(
           obj.dateFrom,
           obj.dateTo
@@ -80,6 +83,7 @@ class BusinessRequirements {
   filterById(idEmployee) {
     return Promise.resolve()
       .then(() => db.fetch("holidays"))
+      .catch(() => [])
       .then(data => {
         let filterArr = data.filter(item => {
           if (item.id === idEmployee) {
@@ -87,8 +91,7 @@ class BusinessRequirements {
           }
         });
         return filterArr;
-      })
-      .catch(() => Promise.resolve());
+      });
   }
   toCountDiffBetweenDates(dateFrom, dateTo) {
     dateFrom = new Date(dateFrom);
