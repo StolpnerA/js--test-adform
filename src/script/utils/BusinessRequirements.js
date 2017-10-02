@@ -27,6 +27,9 @@ class BusinessRequirements {
         });
       })
       .then(obj => {
+        if (!obj) {
+          return Promise.resolve();
+        }
         let diffBetweenDateLastHoli = this.toCountDiffBetweenDates(
           obj.dateFrom,
           obj.dateTo
@@ -81,6 +84,7 @@ class BusinessRequirements {
   filterById(idEmployee) {
     return Promise.resolve()
       .then(() => db.fetch("holidays"))
+      .catch(() => [])
       .then(data => {
         let filterArr = data.filter(item => {
           if (item.id === idEmployee) {
