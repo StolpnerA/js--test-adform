@@ -7,7 +7,14 @@ class BusinessRequirements {
     this.arrEmployees = [];
     this.arrDate = [];
   }
-  checkingData(countDays, dateFrom, dateTo, idEmployee, positionEmployee) {
+  checkingData(
+    countDays,
+    dateFrom,
+    dateTo,
+    idEmployee,
+    positionEmployee,
+    arrDate
+  ) {
     if (!dateFrom || !dateTo) return Promise.reject("Выберите дату");
     return Promise.resolve()
       .then(() => this.toCountDiffBetweenDates(dateFrom, dateTo))
@@ -18,9 +25,12 @@ class BusinessRequirements {
         return this.checkingMinDaysOnHoliday(diffBetweenDates);
       })
       .then(diffBetweenDates => this.checkingMaxDaysOnHoliday(diffBetweenDates))
-      .then(() => this.filterByPosition(idEmployee, positionEmployee))
+      .then(() => this.filterByPosition(idEmployee, positionEmployee, arrDate))
       .then(() => this.filterByDateRange(dateFrom, dateTo))
-      .then(filteredArr => this.chackingCountEmployeeInHoli(filteredArr))
+      .then(filteredArr => {
+        debugger;
+        return this.chackingCountEmployeeInHoli(filteredArr);
+      })
       .then(() => {
         return this.filterById(idEmployee);
       })
@@ -53,7 +63,7 @@ class BusinessRequirements {
   }
   //В задании не сказана, что делать если человек один на должности, поэтому решил его отправлять в отпус
   chackingCountEmployeeInHoli(filteredArr) {
-    let res = filteredArr.length * 100 / this.arrDate.length;
+    let res = (filteredArr.length + 1) * 100 / this.arrEmployees.length;
     if (res > 50) {
       return Promise.reject(
         "По данной специальности нельзя уходить в отпуск (в отпуске имеют право находиться не более 50% сотрудников одной должности)"
@@ -115,6 +125,7 @@ class BusinessRequirements {
       .then(() => db.fetch("holidays"))
       .catch(() => [])
       .then(data => {
+        console.log(data, this.arrDate);
         let filterArr = data.filter(item => {
           if (item.id === idEmployee) {
             return item.id;
@@ -123,7 +134,7 @@ class BusinessRequirements {
         return filterArr;
       });
   }
-  filterByPosition(idEmployee, positionEmployee) {
+  filterByPosition(idEmployee, positionEmployee, arrDate) {
     return Promise.resolve()
       .then(() => db.fetch("holidays"))
       .catch(() => [])
@@ -131,7 +142,7 @@ class BusinessRequirements {
       .then(() => db.fetch("employees"))
       .then(data => (this.arrEmployees = data))
       .then(() => {
-        this.arrEmployees = this.getUserByPositiom(
+        this.arrEmployees = this.filterUserByPositiom(
           positionEmployee,
           this.arrEmployees
         );
@@ -144,12 +155,13 @@ class BusinessRequirements {
         });
       });
   }
-  getUserByPositiom(userPosi, users) {
+  filterUserByPositiom(userPosi, users) {
     return users.filter(item => userPosi === item.position);
   }
   filterByDateRange(dateFrom) {
+    debugger;
     let newArr = this.arrDate.filter(item => {
-      return dateFrom >= item.dateFrom && dateFrom < item.dateTo;
+      return dateFrom >= item.dateFrom && dateFrom <= item.dateTo;
     });
     return newArr;
   }
