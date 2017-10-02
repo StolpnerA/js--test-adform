@@ -51,10 +51,10 @@ class BusinessRequirements {
         );
       });
   }
+  //В задании не сказана, что делать если человек один на должности, поэтому решил его отправлять в отпус
   chackingCountEmployeeInHoli(filteredArr) {
-    debugger;
     let res = filteredArr.length * 100 / this.arrDate.length;
-    if (!res || res > 50) {
+    if (res > 50) {
       return Promise.reject(
         "По данной специальности нельзя уходить в отпуск (в отпуске имеют право находиться не более 50% сотрудников одной должности)"
       );
