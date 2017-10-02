@@ -4,7 +4,6 @@ let db = new DB();
 let sortArr = new SortArr();
 class BusinessRequirements {
   checkingData(countDays, dateFrom, dateTo, idEmployee, positionEmployee) {
-    debugger;
     if (!dateFrom || !dateTo) return Promise.reject("Выберите дату");
     return Promise.resolve()
       .then(() => this.toCountDiffBetweenDates(dateFrom, dateTo))
