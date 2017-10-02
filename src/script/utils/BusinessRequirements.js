@@ -28,7 +28,6 @@ class BusinessRequirements {
       .then(() => this.filterByPosition(idEmployee, positionEmployee, arrDate))
       .then(() => this.filterByDateRange(dateFrom, dateTo))
       .then(filteredArr => {
-        debugger;
         return this.chackingCountEmployeeInHoli(filteredArr);
       })
       .then(() => {
@@ -121,18 +120,14 @@ class BusinessRequirements {
     }
   }
   filterById(idEmployee) {
-    return Promise.resolve()
-      .then(() => db.fetch("holidays"))
-      .catch(() => [])
-      .then(data => {
-        console.log(data, this.arrDate);
-        let filterArr = data.filter(item => {
-          if (item.id === idEmployee) {
-            return item.id;
-          }
-        });
-        return filterArr;
+    return Promise.resolve().then(() => {
+      let filterArr = this.arrDate.filter(item => {
+        if (item.id === idEmployee) {
+          return item.id;
+        }
       });
+      return filterArr;
+    });
   }
   filterByPosition(idEmployee, positionEmployee, arrDate) {
     return Promise.resolve()
@@ -159,7 +154,6 @@ class BusinessRequirements {
     return users.filter(item => userPosi === item.position);
   }
   filterByDateRange(dateFrom) {
-    debugger;
     let newArr = this.arrDate.filter(item => {
       return dateFrom >= item.dateFrom && dateFrom <= item.dateTo;
     });
