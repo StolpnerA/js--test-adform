@@ -30,7 +30,7 @@ class IndexPage {
           if (dateNow < dateFrom) {
             classForTr = "upcoming";
             btnEdite = `<button type="button" class="editDate btn btn-light">Изменить даты</button>`;
-            btnDel = `<button type="button" class="delData btn btn-light">Удалить</button>`;
+            btnDel = `<button type="button" class="delData id_${elem.id} btn btn-light">Удалить</button>`;
           } else if (dateNow >= dateFrom && dateNow <= dateTo) {
             classForTr = "present";
           } else classForTr = "past";
@@ -81,6 +81,7 @@ class IndexPage {
     let btnSortByDateFromDescending = document.querySelector(
       ".sortByDateFromDescending"
     );
+    let table = document.querySelector("table");
     btnSortByFioАscending.addEventListener(
       "click",
       eventForSort("employees", "sortByFioАscending")
@@ -97,6 +98,10 @@ class IndexPage {
       "click",
       eventForSort("holidays", "sortByDateFromDescending")
     );
+    table.addEventListener("click", ev => {
+      console.log(ev.target);
+    });
+
     let that = this;
     function eventForSort(nameDB, sortBy) {
       return () => {
