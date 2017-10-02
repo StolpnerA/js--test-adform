@@ -100,6 +100,7 @@ class IndexPage {
       eventForSort("holidays", "sortByDateFromDescending")
     );
     table.addEventListener("click", ev => {
+      if (ev.target.tagName != "BUTTON") return;
       let idHoli = ev.target.classList[1].slice(3);
       let dateFrom = ev.target.classList[2].slice(9);
       let dateTo = ev.target.classList[3].slice(7);
