@@ -30,7 +30,7 @@ class IndexPage {
           let dateTo = new Date(elem.dateTo);
           if (dateNow < dateFrom) {
             classForTr = "upcoming";
-            btnEdite = `<button type="button" class="editDate btn btn-light">Изменить даты</button>`;
+            btnEdite = `<button type="button" class="editDate id_${elem.idHoli} btn btn-light">Изменить даты</button>`;
             btnDel = `<button type="button" class="delData id_${elem.idHoli} dateFrom_${elem.dateFrom} dateTo_${elem.dateTo} idEmplo_${element.id} btn btn-light">Удалить</button>`;
           } else if (dateNow >= dateFrom && dateNow <= dateTo) {
             classForTr = "present";
@@ -101,39 +101,11 @@ class IndexPage {
     );
     table.addEventListener("click", ev => {
       if (ev.target.tagName != "BUTTON") return;
-      let idHoli = ev.target.classList[1].slice(3);
-      let dateFrom = ev.target.classList[2].slice(9);
-      let dateTo = ev.target.classList[3].slice(7);
-      let diffBetweenDates = br.toCountDiffBetweenDates(dateFrom, dateTo);
-      let idEmplo = ev.target.classList[4].slice(8);
-      db
-        .fetch("holidays")
-        .then(data => {
-          data.forEach((item, i) => {
-            if (item.idHoli == idHoli) {
-              data.splice(i, 1);
-            }
-          });
-          return data;
-        })
-        .then(data => {
-          db.setItem("holidays", data);
-          this.arrDate = data;
-        })
-        .then(() => db.fetch("employees"))
-        .then(data => {
-          data.forEach(item => {
-            if (item.id == idEmplo) {
-              item.countDaysHoli += diffBetweenDates;
-            }
-          });
-          return data;
-        })
-        .then(newArr => {
-          db.setItem("employees", newArr);
-          this.arrEmloyees = newArr;
-        })
-        .then(() => this.renderPage());
+      if (ev.target.classList[0] === "editDate") {
+        this.eventEditeBtn(ev);
+      } else {
+        this.eventRemoveBtn(ev);
+      }
     });
 
     let that = this;
@@ -144,6 +116,44 @@ class IndexPage {
         that.renderPage();
       };
     }
+  }
+  eventRemoveBtn(ev) {
+    let idHoli = ev.target.classList[1].slice(3);
+    let dateFrom = ev.target.classList[2].slice(9);
+    let dateTo = ev.target.classList[3].slice(7);
+    let diffBetweenDates = br.toCountDiffBetweenDates(dateFrom, dateTo);
+    let idEmplo = ev.target.classList[4].slice(8);
+    db
+      .fetch("holidays")
+      .then(data => {
+        data.forEach((item, i) => {
+          if (item.idHoli == idHoli) {
+            data.splice(i, 1);
+          }
+        });
+        return data;
+      })
+      .then(data => {
+        db.setItem("holidays", data);
+        this.arrDate = data;
+      })
+      .then(() => db.fetch("employees"))
+      .then(data => {
+        data.forEach(item => {
+          if (item.id == idEmplo) {
+            item.countDaysHoli += diffBetweenDates;
+          }
+        });
+        return data;
+      })
+      .then(newArr => {
+        db.setItem("employees", newArr);
+        this.arrEmloyees = newArr;
+      })
+      .then(() => this.renderPage());
+  }
+  eventEditeBtn(ev) {
+    location.hash = `${ev.target.classList[1]}`;
   }
 }
 export default IndexPage;
